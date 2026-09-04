@@ -2,7 +2,9 @@ import { configDotenv } from 'dotenv';
 import jwt, { decode } from 'jsonwebtoken';
 configDotenv();
 
-export function authUser(req,res,next){
+import redis from '../config/cache.js';
+
+export async function authUser(req,res,next){
   
   const {Nexa_Token} = req.cookies;
   if(!Nexa_Token){
@@ -10,6 +12,11 @@ export function authUser(req,res,next){
       Message:"Token not provided",
       success:false
     })
+  }
+
+  const isTokenBlackListed = await redis.get(Nexa_Token);
+  if(isTokenBlackListed){
+    return res.status()
   }
 
   try{
