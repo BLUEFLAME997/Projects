@@ -16,6 +16,10 @@ const userSchema = new mongoose.Schema({
     type:String,
     required:[true,"Password required"],
     minlength:6
+  },
+  verified:{
+    type:Boolean,
+    default:false
   }
 })
 
