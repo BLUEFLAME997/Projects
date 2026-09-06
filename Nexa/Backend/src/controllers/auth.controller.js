@@ -36,7 +36,8 @@ export async function userRegisterController(req, res) {
     subject:'welcome to Nexa',
     html:`
     <h1>Welcome to Nexa</h1>
-    <p>Thank you for registering with Nexa. Please click the link below to verify your email address:</p>`
+    <p>Click the link below to verify your email</p>
+    <a href="${process.env.FRONTEND_URL}/verify-email?token=${emailVerificationToken}">Verify Email</a>`
   })
 
   res.status(201).json({
