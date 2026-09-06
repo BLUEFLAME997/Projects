@@ -14,7 +14,7 @@ function validationFunction(req, res, next) {
 
 export const registerValidator = [
   body('username')
-    .isEmpty().withMessage('Username cannot be empty')
+    .notEmpty().withMessage('Username cannot be empty')
     .isString().withMessage('Username should be a valid string'),
   body('email')
     .trim()

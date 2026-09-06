@@ -1,6 +1,7 @@
 import userModel from "../models/user.model.js";
 import jwt from 'jsonwebtoken';
 import redis from "../config/cache.js";
+import { sendEmail } from "../services/mail.service.js";
 
 export async function userRegisterController(req, res) {
   const { username, email, password } = req.body;
@@ -28,9 +29,20 @@ export async function userRegisterController(req, res) {
   const emailVerificationToken = jwt.sign({
     email: email,
     userId: user._id
+  }, process.env.JWT_SECRET, { expiresIn: "1h" })
+
+  await sendEmail({
+    to:email,
+    subject:'welcome to Nexa',
+    html:`
+    <h1>Welcome to Nexa</h1>
+    <p>Thank you for registering with Nexa. Please click the link below to verify your email address:</p>`
   })
 
-
+  res.status(201).json({
+    Message: "User registered successfully",
+    success: true
+  })
 }
 
 export async function userLoginController(req, res) {
