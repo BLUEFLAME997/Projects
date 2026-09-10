@@ -50,15 +50,17 @@ export async function addUserContactController(req, res) {
 }
 
 export async function searchUserController(req, res) {
-  const { userId } = req.params;
-  if (!userId) {
+  const { username } = req.query;
+  if (!username) {
     return res.status(400).json({
-      Message: "UserId not provided",
+      Message: "Username not provided",
       success: false
     })
   }
 
-  const isUserExist = await userModel.findById(userId);
+  const isUserExist = await userModel.findOne({
+    username:username
+  })
   if (!isUserExist) {
     return res.status(404).json({
       Message:"User not found with provided id",
