@@ -93,5 +93,31 @@ export async function listUserContactController(req, res) {
 }
 
 export async function deleteUserContactController(req,res){
-  
+  const {userId} = req.params;
+  const ownerId = req.user.id;
+
+  if(!userId){
+    return res.status(400).json({
+      Message:"UserId not provided",
+      success:false
+    })
+  }
+
+  const isUserExist = await contactModel.findById(userId);
+  if(!isUserExist){
+    return res.status(404).json({
+      Message:"User is not in a contact list",
+      success:false
+    })
+  }
+
+  const deleteUser = await contactModel.findOneAndDelete({
+    owner:ownerId,
+    contactUser:userId
+  })
+
+  res.status(200).json({
+    Message:"User removed from contact successfully",
+    success:true
+  })
 }
