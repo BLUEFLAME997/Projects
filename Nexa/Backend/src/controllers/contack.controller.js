@@ -51,6 +51,7 @@ export async function addUserContactController(req, res) {
 
 export async function searchUserController(req, res) {
   const { username } = req.query;
+
   if (!username) {
     return res.status(400).json({
       Message: "Username not provided",
@@ -63,7 +64,7 @@ export async function searchUserController(req, res) {
   })
   if (!isUserExist) {
     return res.status(404).json({
-      Message:"User not found with provided id",
+      Message:"User not found",
       success:false
     })
   }

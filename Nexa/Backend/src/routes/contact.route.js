@@ -8,7 +8,7 @@ const contactRouter = express.Router();
 @route: POST /api/contact/:id
 @description: To create a contact and add in the list of owner 
 */
-contactRouter.post('/add-user',authUser,addUserContactController);
+contactRouter.post('/add-user/:userId',authUser,addUserContactController);
 /* 
 @route: GET /api/search    [username = (value)]
 @description: To search the user by username

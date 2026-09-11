@@ -30,11 +30,11 @@ export const registerValidator = [
 export const loginValidator = [
   body('email')
     .trim()
-    .isEmpty().withMessage('Email cannot be empty')
+    .notEmpty().withMessage('Email cannot be empty')
     .isEmail().withMessage('Should be a valid email address'),
   body('password')
     .trim()
-    .isEmpty().withMessage('Password cannot be empty')
+    .notEmpty().withMessage('Password cannot be empty')
     .isLength({ min: 6, max: 12 }).withMessage('Password should be in a range 6 to 12 characters'),
   validationFunction
 ]
