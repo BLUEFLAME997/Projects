@@ -61,7 +61,8 @@ export async function searchUserController(req, res) {
 
   const isUserExist = await userModel.findOne({
     username:username
-  })
+  }).select('-password');
+
   if (!isUserExist) {
     return res.status(404).json({
       Message:"User not found",
@@ -106,7 +107,11 @@ export async function deleteUserContactController(req,res){
     })
   }
 
-  const isUserExist = await contactModel.findById(userId);
+  const isUserExist = await contactModel.findOne({
+    owner:ownerId,
+    contactUser:userId
+  });
+  
   if(!isUserExist){
     return res.status(404).json({
       Message:"User is not in a contact list",
