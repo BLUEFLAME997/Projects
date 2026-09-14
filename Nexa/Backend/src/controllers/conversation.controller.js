@@ -8,9 +8,19 @@ export async function conversationController(req, res, next) {
     const { otherUserId } = req.body;
     const senderId = req.user.id;
     try {
-      const response = await privateChatService(otherUserId,senderId);
+      const conversation = await privateChatService(otherUserId,senderId);
+      
+      return res.status(200).json({
+        Message:"Conversation details fetched successfully",
+        success:true,
+        conversation
+      })
+
     } catch (err) {
       next(err);
     }
+  }else if(type === 'group'){
+    
   }
+
 }
