@@ -1,13 +1,11 @@
 import userModel from "../models/user.model.js";
 import { privateChatService } from "../services/privateChat.service.js";
 
-export async function conversationController(req, res, next) {
-  const { type } = req.body;
-
-  if (type === 'private') {
+export async function createPrivateConversationController(req, res, next) {
     const { otherUserId } = req.body;
     const senderId = req.user.id;
     try {
+      
       const conversation = await privateChatService(otherUserId,senderId);
       
       return res.status(200).json({
@@ -19,8 +17,8 @@ export async function conversationController(req, res, next) {
     } catch (err) {
       next(err);
     }
-  }else if(type === 'group'){
-    
-  }
+}
 
+export async function createGroupConversationController(req,res,next){
+  const {groupname} = req.body;
 }

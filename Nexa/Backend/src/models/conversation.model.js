@@ -31,7 +31,8 @@ const conversationSchema = new mongoose.Schema({
   },
   groupName: {
     type: String,
-    trim: true
+    trim: true,
+    required:true
   },
   groupAvatar: {
     type: String
