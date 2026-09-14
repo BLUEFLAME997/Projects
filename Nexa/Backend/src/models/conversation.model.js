@@ -35,7 +35,8 @@ const conversationSchema = new mongoose.Schema({
     required:true
   },
   groupAvatar: {
-    type: String
+    type: String,
+    default:'https://ik.imagekit.io/djhzv5vfq/Nexa/nexa_default_image.png?updatedAt=1789380121190'
   },
   groupAdmins: [
     {

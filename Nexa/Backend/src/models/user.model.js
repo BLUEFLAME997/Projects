@@ -17,6 +17,10 @@ const userSchema = new mongoose.Schema({
     required:[true,"Password required"],
     minlength:6
   },
+  isBot:{
+    type:Boolean,
+    default:false
+  },
   verified:{
     type:Boolean,
     default:false
