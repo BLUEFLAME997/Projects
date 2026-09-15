@@ -23,6 +23,6 @@ app.use('/api/contact',contactRouter);
 /* 
 @Route: Conversation api route
 */
-app.use('/api/conversation',conversationRouter);
+app.use('/api/conversations',conversationRouter);
 
 export default app

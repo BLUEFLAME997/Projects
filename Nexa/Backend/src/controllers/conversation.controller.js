@@ -3,6 +3,7 @@ import userModel from "../models/user.model.js";
 import { privateChatService } from "../services/privateChat.service.js";
 import { groupChatSerice } from "../services/groupChat.service.js";
 import { aiChatService } from "../services/aiChat.service.js";
+import { listConversationService } from "../services/listConversation.service.js";
 configDotenv();
 
 export async function createPrivateConversationController(req, res, next) {
@@ -41,14 +42,34 @@ export async function createGroupConversationController(req, res, next) {
   }
 }
 
-export async function createAiConversationController(req,res,next){
+export async function createAiConversationController(req, res, next) {
   const userId = req.user.id;
-  try{
+
+  try {
     const conversation = await aiChatService(userId);
+
     return res.status(200).json({
-      Message:"Ai chat created successfully"
+      Message: "Ai chat created successfully"
     })
-  }catch(err){
+
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function getAllMyConversatoinController(req, res, next) {
+  const userId = req.user.id;
+  try {
+
+    const conversationList = await listConversationService(userId);
+
+    return res.status(200).json({
+      Message: "Conversation data fetched successfully",
+      success: true,
+      conversationList
+    })
+
+  } catch (err) {
     next(err);
   }
 }
