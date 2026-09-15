@@ -25,11 +25,11 @@ export async function createPrivateConversationController(req, res, next) {
 }
 
 export async function createGroupConversationController(req, res, next) {
-  const { groupname, participantsId } = req.body;
+  const { groupname, participantsId, groupavatar } = req.body;
   const creator = req.user.id;
 
   try {
-    const conversation = await groupChatSerice(groupname, creator, participantsId);
+    const conversation = await groupChatSerice(groupname, creator, participantsId, groupavatar);
 
     return res.status(201).json({
       Message: "Group created successfully",
@@ -49,7 +49,8 @@ export async function createAiConversationController(req, res, next) {
     const conversation = await aiChatService(userId);
 
     return res.status(200).json({
-      Message: "Ai chat created successfully"
+      Message: "Ai chat created successfully",
+      conversation
     })
 
   } catch (err) {
@@ -72,4 +73,12 @@ export async function getAllMyConversatoinController(req, res, next) {
   } catch (err) {
     next(err);
   }
+}
+
+export async function updateGroupInfoController(req, res, next) {
+  const { groupname, groupavatar } = req.body;
+  const conversationId = req.params.id;
+  const userId = req.user.id;
+
+
 }
