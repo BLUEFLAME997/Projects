@@ -2,6 +2,7 @@ import { configDotenv } from "dotenv";
 import userModel from "../models/user.model.js";
 import { privateChatService } from "../services/privateChat.service.js";
 import { groupChatSerice } from "../services/groupChat.service.js";
+import { aiChatService } from "../services/aiChat.service.js";
 configDotenv();
 
 export async function createPrivateConversationController(req, res, next) {
@@ -41,5 +42,13 @@ export async function createGroupConversationController(req, res, next) {
 }
 
 export async function createAiConversationController(req,res,next){
-  
+  const userId = req.user.id;
+  try{
+    const conversation = await aiChatService(userId);
+    return res.status(200).json({
+      Message:"Ai chat created successfully"
+    })
+  }catch(err){
+    next(err);
+  }
 }
