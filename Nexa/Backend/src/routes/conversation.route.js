@@ -2,6 +2,7 @@ import express from 'express';
 import { createPrivateConversationController, createGroupConversationController, createAiConversationController,getAllMyConversatoinController } from "../controllers/conversation.controller.js";
 import { authUser } from '../middleware/auth.middleware.js';
 import { aiChatService } from '../services/aiChat.service.js';
+import upload from '../middleware/upload.middleware.js';
 
 const conversationRouter = express.Router();
 
@@ -14,7 +15,7 @@ conversationRouter.post('/private', authUser, createPrivateConversationControlle
 @route: POST /api/conversations/group
 @desciption: To create a group conversation with minimum 3 users
 */
-conversationRouter.post('/group', authUser, createGroupConversationController);
+conversationRouter.post('/group', authUser,upload.single('groupavatar') ,createGroupConversationController);
 /* 
 @route: POST /api/conversations/ai
 @description: To create a Ai conversation 

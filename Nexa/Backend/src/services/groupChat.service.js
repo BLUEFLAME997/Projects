@@ -43,6 +43,7 @@ export async function groupChatSerice(groupname, creator, participantsId, groupa
 }
 
 export async function updateGroupService(userId, conversationId, groupname, groupavatar) {
+  
   if (!userId) {
     throw new AppError('User id not provided', 400);
   }
@@ -66,4 +67,6 @@ export async function updateGroupService(userId, conversationId, groupname, grou
       throw new AppError('Group avatar cannot be empty', 400);
     }
   }
+
+  
 }
