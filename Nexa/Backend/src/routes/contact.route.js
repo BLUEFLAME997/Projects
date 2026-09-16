@@ -1,5 +1,5 @@
 import express from 'express';
-import { addUserContactController,searchUserController,listUserContactController,deleteUserContactController } from '../controllers/contack.controller.js';
+import { addUserContactController,searchUserController,listUserContactController,deleteUserContactController } from '../controllers/contact.controller.js';
 import { authUser } from '../middleware/auth.middleware.js';
 
 const contactRouter = express.Router();

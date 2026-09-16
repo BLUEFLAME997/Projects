@@ -1,7 +1,7 @@
 import { configDotenv } from "dotenv";
 import userModel from "../models/user.model.js";
 import { privateChatService } from "../services/privateChat.service.js";
-import { groupChatSerice, updateGroupService } from "../services/groupChat.service.js";
+import { groupChatSerice, updateGroupService, addUserInGroupService, removeMemberFromGroupService } from "../services/groupChat.service.js";
 import { aiChatService } from "../services/aiChat.service.js";
 import { listConversationService } from "../services/listConversation.service.js";
 import { uploadImageService } from "../services/imagekit.service.js";
@@ -117,6 +117,44 @@ export async function getConversationByIdController(req, res, next) {
       Message: "Conversation data fetched successfully",
       success: true,
       converstaion
+    })
+
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function addUserInGroupController(req, res, next) {
+  const { conversationId } = req.params;
+  const {userId} = req.body;
+  const adminId = req.user.id;
+  
+  try {
+  
+    const conversation = await addUserInGroupController(userId, conversationId, adminId);
+  
+    return res.status(200).json({
+      Message: "User added in the group successfully",
+      success: true,
+      conversation
+    })
+  
+  } catch (err) {
+
+  }
+}
+
+export async function removeUserFromGroupController(req, res, next) {
+  const { conversationId, userId } = req.params;
+  const adminId = req.user.id;
+
+  try {
+
+    const conversation = await removeMemberFromGroupService(userId, conversationId, adminId);
+
+    return res.status(200).json({
+      Message: "User remove from the group successfully",
+      conversation
     })
 
   } catch (err) {

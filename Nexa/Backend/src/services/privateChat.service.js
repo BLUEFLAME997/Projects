@@ -1,4 +1,4 @@
-import AppError from "../utils/AppError.js";
+import AppError from '../utils/AppError.js';
 import conversationModel from "../models/conversation.model.js";
 
 export async function privateChatService(otherUserId, senderId) {

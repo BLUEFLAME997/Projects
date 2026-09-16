@@ -73,3 +73,67 @@ export async function updateGroupService(userId, conversationId, groupname, grou
   await conversation.save();
   return conversation;
 }
+
+export async function addUserInGroupService(userId,conversationId,adminId){
+  if(!userId){
+    throw new AppError('UserID not provided',400);
+  }
+  if(!conversationId){
+    throw new AppError('ConversationID not provided',400);
+  }
+
+  const isUserExist = await userModel.findById(userId);
+  if(!isUserExist){
+    throw new AppError('Invalid user Id',404);
+  }
+  const conversation = await conversationModel.findById(conversationId);
+  
+  if(!conversation){
+    throw new AppError('Invalid conversation Id',404);
+  }
+
+  const isAdmin = conversation.groupAdmins.some(
+    admin => admin.toString() === adminId.toString()
+  )
+  if(!isAdmin){
+    throw new AppError('You are not a group admin',403);
+  }
+
+  conversation.participants.push(userId);
+  await conversation.save();
+  
+  return conversation;
+}
+
+export async function removeMemberFromGroupService(userId,conversationId,adminId){
+  if(!userId){
+    throw new AppError('UserId not provided',400);
+  }
+  if(!conversationId){
+    throw new AppError('ConversationId not provided',400);
+  }
+
+  const isUserExist = await userModel.findById(userId);
+  if(!isUserExist){
+    throw new AppError("Invalid user Id",404)
+  }
+  
+  const conversation = await conversationModel.findById(conversationId);
+  if(!conversation){
+    throw new AppError('Invalid conversation ID',404);
+  }
+  
+  const isGroupAdmin = conversation.groupAdmins.some(
+    admin => adminId.toString() === admin.toString()
+  )
+  if(!isGroupAdmin){
+    throw new AppError('You are not a group admin',403)
+  }
+
+  conversation.groupAdmins = conversation.groupAdmins.filter(
+    user => user.toString() !== userId.toString()
+  )
+
+  await conversation.save();
+  return conversation;
+}

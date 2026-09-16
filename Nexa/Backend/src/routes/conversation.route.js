@@ -1,6 +1,6 @@
 import express from 'express';
 import {
-  createPrivateConversationController, createGroupConversationController, createAiConversationController, getAllMyConversatoinController, updateGroupInfoController,getConversationByIdController
+  createPrivateConversationController, createGroupConversationController, createAiConversationController, getAllMyConversatoinController, updateGroupInfoController, getConversationByIdController, addUserInGroupController, removeUserFromGroupController
 } from "../controllers/conversation.controller.js";
 import { authUser } from '../middleware/auth.middleware.js';
 import upload from '../middleware/upload.middleware.js';
@@ -36,6 +36,16 @@ conversationRouter.patch('/:groupId', authUser, upload.single('groupavatar'), up
 @route: GET /api/conversations/:conversationId
 @description: To get details of one specific conversation
 */
-conversationRouter.get('/:conversatoinId',authUser,getConversationByIdController);
+conversationRouter.get('/:conversatoinId', authUser, getConversationByIdController);
+/* 
+@route: POST /api/conversations/:conversationId/members
+@description: To add a user in a group
+*/
+conversationRouter.post('/:conversatoinId/members',authUser,addUserInGroupController);
+/* 
+@route: DELETE /api/conversations/:conversationId/members/:userId
+@description: To remove a user from a group
+*/
+conversationRouter.delete('/:conversationId/members/:userId',authUser,removeUserFromGroupController);
 
 export default conversationRouter;
