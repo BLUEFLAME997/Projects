@@ -2,7 +2,7 @@ import AppError from "../utils/AppError.js";
 import userModel from "../models/user.model.js";
 import conversationModel from "../models/conversation.model.js";
 
-export async function groupChatSerice(groupname, creator, participantsId, groupavatar) {
+export async function groupChatSerice(groupname, creator, participantsId, groupavatarurl) {
 
   if (!groupname || !groupname.trim()) {
     throw new AppError('Group name not provided', 400);
@@ -25,10 +25,11 @@ export async function groupChatSerice(groupname, creator, participantsId, groupa
     throw new AppError('One or more participants ID is invalid', 400);
   }
 
-  if(groupavatar !== undefined){
-    if(!groupavatar.trim()){
-      throw new AppError('GroupAvatar cannot be empty',400);
+  if (groupavatarurl !== undefined) {
+    if (!groupavatarurl.trim()) {
+      throw new AppError('GroupAvatar cannot be empty', 400);
     }
+    conversation.groupAvatar = groupavatarurl;
   }
 
   const conversation = await conversationModel.create({
@@ -42,8 +43,8 @@ export async function groupChatSerice(groupname, creator, participantsId, groupa
   return conversation;
 }
 
-export async function updateGroupService(userId, conversationId, groupname, groupavatar) {
-  
+export async function updateGroupService(userId, conversationId, groupname, groupavatarurl) {
+
   if (!userId) {
     throw new AppError('User id not provided', 400);
   }
@@ -62,11 +63,13 @@ export async function updateGroupService(userId, conversationId, groupname, grou
     }
     conversation.groupName = groupname;
   }
-  if (groupavatar !== undefined) {
-    if (!groupavatar.trim()) {
+  if (groupavatarurl !== undefined) {
+    if (!groupavatarurl.trim()) {
       throw new AppError('Group avatar cannot be empty', 400);
     }
+    conversation.groupAvatar = groupavatarurl;
   }
 
-  
+  await conversation.save();
+  return conversation;
 }

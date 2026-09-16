@@ -1,9 +1,10 @@
 import { configDotenv } from "dotenv";
 import userModel from "../models/user.model.js";
 import { privateChatService } from "../services/privateChat.service.js";
-import { groupChatSerice } from "../services/groupChat.service.js";
+import { groupChatSerice, updateGroupService } from "../services/groupChat.service.js";
 import { aiChatService } from "../services/aiChat.service.js";
 import { listConversationService } from "../services/listConversation.service.js";
+import { uploadImageService } from "../services/imagekit.service.js";
 configDotenv();
 
 export async function createPrivateConversationController(req, res, next) {
@@ -29,7 +30,11 @@ export async function createGroupConversationController(req, res, next) {
   const creator = req.user.id;
 
   try {
-    const conversation = await groupChatSerice(groupname, creator, participantsId, groupavatar);
+    let groupavatarurl;
+    if(req.file){
+      groupavatarurl = await uploadImageService(req.file.originalname,req.file.buffer);
+    }
+    const conversation = await groupChatSerice(groupname, creator, participantsId, groupavatarurl);
 
     return res.status(201).json({
       Message: "Group created successfully",
@@ -80,5 +85,20 @@ export async function updateGroupInfoController(req, res, next) {
   const conversationId = req.params.id;
   const userId = req.user.id;
 
+  try {
+
+    let groupAvatarUrl;
+    if (req.file) {
+      groupAvatarUrl = await uploadImageService(req.file.originalname, req.file.buffer);
+    }
+
+    const updateGroup = await updateGroupService(userId, conversationId, groupname, groupAvatarUrl);
+    return res.status().json({
+      Message: "Group data updated successfully",
+      success: true
+    })
+  } catch (err) {
+    next(err);
+  }
 
 }
