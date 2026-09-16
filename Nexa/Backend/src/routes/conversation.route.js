@@ -1,7 +1,8 @@
 import express from 'express';
-import { createPrivateConversationController, createGroupConversationController, createAiConversationController,getAllMyConversatoinController } from "../controllers/conversation.controller.js";
+import {
+  createPrivateConversationController, createGroupConversationController, createAiConversationController, getAllMyConversatoinController, updateGroupInfoController,getConversationByIdController
+} from "../controllers/conversation.controller.js";
 import { authUser } from '../middleware/auth.middleware.js';
-import { aiChatService } from '../services/aiChat.service.js';
 import upload from '../middleware/upload.middleware.js';
 
 const conversationRouter = express.Router();
@@ -15,16 +16,26 @@ conversationRouter.post('/private', authUser, createPrivateConversationControlle
 @route: POST /api/conversations/group
 @desciption: To create a group conversation with minimum 3 users
 */
-conversationRouter.post('/group', authUser,upload.single('groupavatar') ,createGroupConversationController);
+conversationRouter.post('/group', authUser, upload.single('groupavatar'), createGroupConversationController);
 /* 
 @route: POST /api/conversations/ai
 @description: To create a Ai conversation 
 */
-conversationRouter.post('/ai',authUser,aiChatService);
+conversationRouter.post('/ai', authUser, createAiConversationController);
 /* 
 @route: GET /api/conversations/
 @description: To get all the conversation of the user
 */
-conversationRouter.get('/',authUser,getAllMyConversatoinController);
+conversationRouter.get('/', authUser, getAllMyConversatoinController);
+/* 
+@route: PATCH /api/conversations/:groupId
+@description: To update the group info 
+*/
+conversationRouter.patch('/:groupId', authUser, upload.single('groupavatar'), updateGroupInfoController);
+/* 
+@route: GET /api/conversations/:conversationId
+@description: To get details of one specific conversation
+*/
+conversationRouter.get('/:conversatoinId',authUser,getConversationByIdController);
 
 export default conversationRouter;

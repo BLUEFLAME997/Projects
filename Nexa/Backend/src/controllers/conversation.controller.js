@@ -5,6 +5,7 @@ import { groupChatSerice, updateGroupService } from "../services/groupChat.servi
 import { aiChatService } from "../services/aiChat.service.js";
 import { listConversationService } from "../services/listConversation.service.js";
 import { uploadImageService } from "../services/imagekit.service.js";
+import { getConversationByIdService } from "../services/conversatoin.service.js";
 configDotenv();
 
 export async function createPrivateConversationController(req, res, next) {
@@ -31,8 +32,8 @@ export async function createGroupConversationController(req, res, next) {
 
   try {
     let groupavatarurl;
-    if(req.file){
-      groupavatarurl = await uploadImageService(req.file.originalname,req.file.buffer);
+    if (req.file) {
+      groupavatarurl = await uploadImageService(req.file.originalname, req.file.buffer);
     }
     const conversation = await groupChatSerice(groupname, creator, participantsId, groupavatarurl);
 
@@ -101,4 +102,24 @@ export async function updateGroupInfoController(req, res, next) {
     next(err);
   }
 
+}
+
+export async function getConversationByIdController(req, res, next) {
+
+  const { conversationId } = req.params;
+  const userId = req.user.id;
+
+  try {
+
+    const converstaion = await getConversationByIdController(userId, conversationId);
+
+    return res.status(200).json({
+      Message: "Conversation data fetched successfully",
+      success: true,
+      converstaion
+    })
+
+  } catch (err) {
+    next(err);
+  }
 }
