@@ -160,4 +160,3 @@ export async function removeUserFromGroupController(req, res, next) {
     next(err);
   }
 }
-~
