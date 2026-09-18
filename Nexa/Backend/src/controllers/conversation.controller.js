@@ -1,11 +1,10 @@
 import { configDotenv } from "dotenv";
-import userModel from "../models/user.model.js";
 import { privateChatService } from "../services/privateChat.service.js";
 import { groupChatSerice, updateGroupService, addUserInGroupService, removeMemberFromGroupService } from "../services/groupChat.service.js";
 import { aiChatService } from "../services/aiChat.service.js";
 import { listConversationService } from "../services/listConversation.service.js";
 import { uploadImageService } from "../services/imagekit.service.js";
-import { getConversationByIdService } from "../services/conversatoin.service.js";
+
 configDotenv();
 
 export async function createPrivateConversationController(req, res, next) {
@@ -161,3 +160,4 @@ export async function removeUserFromGroupController(req, res, next) {
     next(err);
   }
 }
+~
