@@ -1,5 +1,6 @@
 import { configDotenv } from 'dotenv';
 import jwt, { decode } from 'jsonwebtoken';
+import AppError from '../utils/AppError.js';
 configDotenv();
 
 import redis from '../config/cache.js';
@@ -8,15 +9,12 @@ export async function authUser(req,res,next){
   
   const {Nexa_Token} = req.cookies;
   if(!Nexa_Token){
-    return res.status(401).json({
-      Message:"Token not provided",
-      success:false
-    })
+    throw new AppError('Token not provided',401);
   }
 
   const isTokenBlackListed = await redis.get(Nexa_Token);
   if(isTokenBlackListed){
-    return res.status()
+    throw new AppError('Token has been revoked',401);
   }
 
   try{
@@ -25,9 +23,6 @@ export async function authUser(req,res,next){
     next();
 
   }catch(err){
-    return res.status(401).json({
-      Message:"Unauthorized",
-      success:false
-    })
+    next(new AppError('Unauthorized access',401));
   }
 }
