@@ -18,6 +18,11 @@ export async function socketAuthMiddleware(socket,next){
   if(!token){
     return next(new AppError("No token provided",401));
   }
+  
+  const isTokenBlackListed = await redis.get(token);
+  if(isTokenBlackListed){
+    return next(new AppError('Token has been revoked',401));
+  }
 
   try{
     const decoded = jwt.verify(token,process.env.JWT_SECRET);
