@@ -10,6 +10,6 @@ const io = new Server(server);
 
 connectToDataBase();
 
-app.listen(process.env.PORT,()=>{
+server.listen(process.env.PORT,()=>{
   console.log("Server running on port 8000..")
 })
