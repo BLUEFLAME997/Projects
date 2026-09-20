@@ -24,3 +24,19 @@ export async function getConversationByIdService(userId,conversationId){
 
   return isConversationExist;
 }
+
+export async function checkConversationService(userId,conversationId){
+  if(!userId || !conversationId){
+    return {status:false,message:"Credentials not provided"};
+  }
+
+  const conversation = await conversationModel.findOne({
+    _id:conversationId,
+    participants:userId
+  })
+  if(!conversation){
+    return {status:false,message:"Invalid conversation id or not a participant"};
+  }
+
+  return {status:true};
+}
