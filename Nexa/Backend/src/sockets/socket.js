@@ -9,10 +9,7 @@ export function initializeSocket(io) {
     console.log("User connected successfully: ",socket.id);
 
     socket.on('conversation:join',async (conversationId)=>{
-      const isConversationExist = await conversationModel.findById(conversationId);
-      if(!isConversationExist){
-        
-      }
+      
     })
 
     socket.on('disconnect',(socket)=>{
